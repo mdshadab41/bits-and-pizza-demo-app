@@ -28,20 +28,23 @@ class GameFragment : Fragment() {
 
         viewModel = ViewModelProvider(this).get(GameViewModel::class.java)
 
-       // updateScreen()
+        binding.gameViewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
 
-        viewModel.incorrectGuesses.observe(viewLifecycleOwner, Observer { newValue ->
-            binding.incorrectGuesses.text = "Incorrect guesses: $newValue"
-        })
 
-        viewModel.livesLeft.observe(viewLifecycleOwner, Observer { newValue ->
-            binding.lives.text = "You have $newValue lives left"
-        })
-        viewModel.secretWordDisplay.observe(viewLifecycleOwner, Observer { newValue ->
-            binding.word.text = newValue
-        })
+
+//        viewModel.incorrectGuesses.observe(viewLifecycleOwner, Observer { newValue ->
+//            binding.incorrectGuesses.text = "Incorrect guesses: $newValue"
+//        })
+
+//        viewModel.livesLeft.observe(viewLifecycleOwner, Observer { newValue ->
+//            binding.lives.text = "You have $newValue lives left"
+//        })
+//        viewModel.secretWordDisplay.observe(viewLifecycleOwner, Observer { newValue ->
+//            binding.word.text = newValue
+//        })
         viewModel.gameOver.observe(viewLifecycleOwner, Observer { newValue ->
-            if (newValue){
+            if (newValue) {
                 val action = GameFragmentDirections
                     .actionGameFragmentToResultFragment(viewModel.wonLostMessage())
                 view.findNavController().navigate(action)
@@ -51,13 +54,8 @@ class GameFragment : Fragment() {
         binding.guessButton.setOnClickListener {
             viewModel.makeGuesses(binding.guess.text.toString().uppercase())
             binding.guess.text = null
-            //updateScreen()
 
-//            if (viewModel.isWon() || viewModel.isLost()) {
-//                val action = GameFragmentDirections
-//                    .actionGameFragmentToResultFragment(viewModel.wonLostMessage())
-//                view.findNavController().navigate(action)
-//            }
+
         }
 
         return view
@@ -67,12 +65,6 @@ class GameFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
-//    fun updateScreen() {
-//        binding.word.text = viewModel.secretWordDisplay
-//        binding.lives.text = "You have ${viewModel.livesLeft} lives left."
-//        binding.incorrectGuesses.text = "Incorrect guesses: ${viewModel.incorrectGuesses}"
-//    }
 
 
 }

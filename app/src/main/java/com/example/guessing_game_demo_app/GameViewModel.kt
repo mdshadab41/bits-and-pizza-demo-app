@@ -4,10 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class GameViewModel: ViewModel() {
+class GameViewModel : ViewModel() {
 
-   private val words = listOf("Android", "Activity", "Fragment")
-   private val secretWord = words.random().uppercase()
+    private val words = listOf("Android", "Activity", "Fragment")
+    private val secretWord = words.random().uppercase()
 
     private val _secretWordDisplay = MutableLiveData<String>()
     val secretWordDisplay: LiveData<String>
@@ -31,44 +31,47 @@ class GameViewModel: ViewModel() {
         _secretWordDisplay.value = deriveSecretWordDisplay()
     }
 
-   private fun deriveSecretWordDisplay(): String {
+    private fun deriveSecretWordDisplay(): String {
         var display = ""
         secretWord.forEach {
             display += checkLetter(it.toString())
         }
         return display
     }
-   private fun checkLetter(str: String) = when (correctGuesses.contains(str)){
+
+    private fun checkLetter(str: String) = when (correctGuesses.contains(str)) {
         true -> str
         false -> "_"
     }
-    fun makeGuesses(guess: String){
-        if (guess.length == 1){
-            if (secretWord.contains(guess)){
+
+    fun makeGuesses(guess: String) {
+        if (guess.length == 1) {
+            if (secretWord.contains(guess)) {
                 correctGuesses += guess
                 _secretWordDisplay.value = deriveSecretWordDisplay()
-            }else{
+            } else {
                 _incorrectGuesses.value += "$guess"
-               // livesLeft--
+                // livesLeft--
                 _livesLeft.value = _livesLeft.value?.minus(1)
             }
             if (isWon() || isLost()) _gameOver.value = true
         }
     }
-   private fun isWon() = secretWord.equals(secretWordDisplay)
-   private fun isLost() = livesLeft.value ?: 0 <= 0
 
-    fun wonLostMessage(): String{
+    private fun isWon() = secretWord.equals(secretWordDisplay)
+    private fun isLost() = livesLeft.value ?: 0 <= 0
+
+    fun wonLostMessage(): String {
         var message = ""
-        if(isWon()) message = "You Won!"
+        if (isWon()) message = "You Won!"
         else if (isLost()) message = "You lost!"
         message += "The word was $secretWord."
         return message
     }
 
-
-
-
+    fun finishGame(){
+        _gameOver.value = true
+    }
 
 
 }

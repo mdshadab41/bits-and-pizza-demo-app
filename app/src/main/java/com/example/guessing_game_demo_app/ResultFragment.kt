@@ -1,30 +1,29 @@
 package com.example.guessing_game_demo_app
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.guessing_game_demo_app.databinding.FragmentResultBinding
 
 
 class ResultFragment : Fragment() {
-    private  var _binding: FragmentResultBinding? =null
-    private val binding get()  = _binding!!
+    private var _binding: FragmentResultBinding? = null
+    private val binding get() = _binding!!
 
     lateinit var viewModel: ResultViewModel
     lateinit var viewModelFactory: ResultViewModelFactory
 
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
-        _binding= FragmentResultBinding.inflate(inflater, container, false)
+        _binding = FragmentResultBinding.inflate(inflater, container, false)
         val view = binding.root
 
         val result = ResultFragmentArgs.fromBundle(requireArguments()).result
@@ -33,9 +32,10 @@ class ResultFragment : Fragment() {
             .get(ResultViewModel::class.java)
 
 
-       // binding.wonLost.text = ResultFragmentArgs.fromBundle(requireArguments()).result
 
-        binding.wonLost.text = viewModel.result
+
+      //  binding.wonLost.text = viewModel.result
+        binding.resultViewModel = viewModel
 
         binding.newGameButton.setOnClickListener {
             view.findNavController()
