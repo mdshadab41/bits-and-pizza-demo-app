@@ -60,6 +60,12 @@ dependencies {
     implementation("androidx.room:room-ktx:2.5.2")
     //kapt ("androidx.room:room-compiler:2.5.2")
 
+    //recyclerview
+    implementation("androidx.recyclerview:recyclerview:1.3.1")
+
+    //cardview
+    implementation("androidx.cardview:cardview:1.0.0")
+
 
 
 }
