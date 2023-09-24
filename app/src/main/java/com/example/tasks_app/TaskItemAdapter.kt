@@ -10,19 +10,13 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.example.tasks_app.databinding.TaskItemBinding
 
-class TaskItemAdapter :
-ListAdapter<Task, TaskItemAdapter.TaskItemViewHolder>(TaskDiffItemCallback()){
-//    var data = listOf<Task>()
-//        set(value) {
-//            field = value
-//            notifyDataSetChanged()
-//        }
-   // override fun getItemCount() = data.size
+
+class TaskItemAdapter(val clickListener: (taskId: Long) -> Unit) : ListAdapter<Task, TaskItemAdapter.TaskItemViewHolder>(TaskDiffItemCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
             : TaskItemViewHolder = TaskItemViewHolder.inflateFrom(parent)
     override fun onBindViewHolder(holder: TaskItemViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item)
+        holder.bind(item, clickListener)
     }
     class TaskItemViewHolder(val binding: TaskItemBinding)
         : RecyclerView.ViewHolder(binding.root) {
@@ -33,8 +27,9 @@ ListAdapter<Task, TaskItemAdapter.TaskItemViewHolder>(TaskDiffItemCallback()){
                 return TaskItemViewHolder(binding)
             }
         }
-        fun bind(item: Task) {
+        fun bind(item: Task, clickListener: (taskId: Long) -> Unit) {
             binding.task = item
+            binding.root.setOnClickListener {clickListener(item.taskId)}
         }
     }
 }

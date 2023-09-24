@@ -2,6 +2,8 @@ package com.example.tasks_app
 
 import android.text.method.TransformationMethod
 import android.view.animation.Transformation
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
@@ -11,9 +13,10 @@ class TasksViewModel(val dao: TaskDao): ViewModel() {
     var newTaskName = ""
 
      val tasks = dao.getAll()
-//    val tasksString = Transformations.map(tasks) {
-//            tasks -> formatTasks(tasks)
-//    }
+
+    private val _navigateToTask = MutableLiveData<Long?>()
+    val navigateToTask: LiveData<Long?>
+        get() = _navigateToTask
 
 
     fun addTask(){
@@ -24,16 +27,11 @@ class TasksViewModel(val dao: TaskDao): ViewModel() {
         }
 
     }
-//    fun formatTasks(tasks: List<Task>): String{
-//        return  tasks.fold(""){
-//            str, item -> str + '\n' + formatTask(item)
-//        }
-//    }
+    fun onTaskedClicked(taskId: Long){
+        _navigateToTask.value = taskId
+    }
+    fun onTaskedNavigated(){
+        _navigateToTask.value = null
+    }
 
-//    fun formatTask(task: Task): String{
-//        var str = "ID: ${task.taskId}"
-//        str += '\n' + "Name: ${task.taskName}"
-//        str += '\n' + "Complete: ${task.taskDone}" + '\n'
-//        return str
-//    }
 }
